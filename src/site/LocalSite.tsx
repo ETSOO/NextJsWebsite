@@ -161,7 +161,7 @@ export class LocalSite {
      * @param id Service id
      * @returns Result
      */
-    getService(id: string) {
+    getService(id: 'GA' | 'WX') {
         return this.data.services.find((s) => s.id === id);
     }
 
