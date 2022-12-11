@@ -1,7 +1,8 @@
-import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
+import { GetStaticPropsContext } from 'next';
 import { SiteTab } from '../dto/site/SiteTab';
 import { ArticlePageProps } from '../props/ArticlePageProps';
 import { StaticSite } from '../site/StaticSite';
+import { StaticPage } from './StaticPage';
 
 type TabFilter =
     | ((tab: SiteTab, context: GetStaticPropsContext) => boolean)
@@ -16,17 +17,7 @@ type TabFilter =
  * @returns Result
  */
 export function StaticArticlePage(site: StaticSite, tabFilter: TabFilter) {
-    return async (
-        context: GetStaticPropsContext
-    ): Promise<GetStaticPropsResult<ArticlePageProps>> => {
-        const siteData = await site.getSiteData();
-        if (siteData == null) {
-            console.log('No Site Data');
-            return {
-                notFound: true
-            };
-        }
-
+    return StaticPage<ArticlePageProps>(site, async (siteData, context) => {
         // Current tab
         let tab: SiteTab | undefined = undefined;
         if (tabFilter === true) {
@@ -91,9 +82,8 @@ export function StaticArticlePage(site: StaticSite, tabFilter: TabFilter) {
         if (article.description)
             siteData.site.description = article.description;
 
-        // Default cache one day
         return {
             props: { siteData, article }
         };
-    };
+    });
 }

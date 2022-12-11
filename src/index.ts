@@ -9,6 +9,11 @@ export * from './dto/site/SiteTab';
 export * from './dto/site/Slideshow';
 export * from './dto/site/TabLayout';
 
+// pages
+export * from './pages/StaticArticlePage';
+export * from './pages/StaticPage';
+export * from './pages/StaticPaths';
+
 // props
 export * from './props/ArticlePageProps';
 export * from './props/SitePageProps';
