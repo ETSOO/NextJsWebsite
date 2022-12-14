@@ -22,5 +22,7 @@ export * from './props/SitePageProps';
 export * from './rq/site/ArticleRQ';
 
 // site
+export * from './site/ClientSite';
 export * from './site/LocalSite';
+export * from './site/OnDemandHandler';
 export * from './site/StaticSite';

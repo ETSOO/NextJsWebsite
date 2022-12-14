@@ -13,7 +13,11 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "jsx": "react",
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "typeRoots": [
+            "./node_modules/@etsoo/weixin/types",
+            "./node_modules/@types"
+        ]
     },
     "include": ["src"]
 }

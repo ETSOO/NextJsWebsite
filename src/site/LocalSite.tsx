@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import React from 'react';
 import { ArticleLink } from '../dto/site/ArticleLink';
 import { SiteData } from '../dto/site/SiteData';
@@ -99,6 +100,83 @@ export class LocalSite {
     }
 
     /**
+     * Create Google Analytics service
+     * @returns Component
+     */
+    createGAService(): React.ReactNode {
+        const ga = this.getService('GA');
+        if (ga == null) return;
+
+        return (
+            <React.Fragment>
+                <Script
+                    src={`https://www.googletagmanager.com/gtag/js?id=${ga.app}`}
+                    strategy="afterInteractive"
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag() { dataLayer.push(arguments); }
+                        gtag('js', new Date());
+
+                        gtag('config', '${ga.app}');
+                    `}
+                </Script>
+            </React.Fragment>
+        );
+    }
+
+    /**
+     * Create Google reCAPTCHA service
+     * @returns Component
+     */
+    createRECAPService(domain: 'G' | 'R' = 'G'): React.ReactNode {
+        const api = domain === 'G' ? 'google.com' : 'recaptcha.net';
+        const re = this.getService('RECAP');
+        const script = re ? (
+            <Script
+                src={`https://www.${api}/recaptcha/api.js?render=${re.app}`}
+                strategy="afterInteractive"
+            />
+        ) : undefined;
+
+        return (
+            <React.Fragment>
+                {script}
+                <Script id="google-recaptcha" strategy="afterInteractive">
+                    {`
+                        function googleRecaptcha(action, callback) {
+                            if(typeof grecaptcha == undefined) {
+                                callback('');
+                                return;
+                            }
+
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('${re?.app}', {action: action}).then(function(token) {
+                                    callback(token);
+                                });
+                            });
+                        }
+                    `}
+                </Script>
+            </React.Fragment>
+        );
+    }
+
+    /**
+     * Create Wechat service
+     * @returns Component
+     */
+    createWXService(): React.ReactNode {
+        const ga = this.getService('WX');
+        if (ga == null) return;
+
+        return (
+            <Script src="/js/jweixin-1.6.0.js" strategy="afterInteractive" />
+        );
+    }
+
+    /**
      * Format article URL
      * 格式化文章链接
      * @param item Article link item
@@ -161,7 +239,7 @@ export class LocalSite {
      * @param id Service id
      * @returns Result
      */
-    getService(id: 'GA' | 'WX') {
+    getService(id: 'GA' | 'WX' | 'RECAP') {
         return this.data.services.find((s) => s.id === id);
     }
 

@@ -19,7 +19,7 @@ export function StaticPaths(site: StaticSite, excludedUrls?: ExcludedUrls) {
             siteData?.tabs
                 .filter((tab) =>
                     typeof excludedUrls === 'function'
-                        ? excludedUrls(tab)
+                        ? !excludedUrls(tab)
                         : tab.layout != 1 &&
                           !excludedUrls?.some(
                               (url) =>
@@ -29,6 +29,8 @@ export function StaticPaths(site: StaticSite, excludedUrls?: ExcludedUrls) {
                 .map((tab) => ({
                     params: { param: tab.url.substring(1).split('/') }
                 })) ?? [];
+
+        console.log('StaticPaths', paths);
 
         return {
             paths,
