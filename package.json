@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/website",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "ETSOO CMS Based NextJs Website Framework",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -62,6 +62,7 @@
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
         "@types/bootstrap": "^5.2.6",
+        "@types/grecaptcha": "^3.0.4",
         "@types/jest": "^29.2.4",
         "@typescript-eslint/eslint-plugin": "^5.46.1",
         "@typescript-eslint/parser": "^5.46.1",

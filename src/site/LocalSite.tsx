@@ -128,36 +128,22 @@ export class LocalSite {
 
     /**
      * Create Google reCAPTCHA service
+     * @param domain Service domain, 'R' for recaptcha.net, 'G' for google.com
      * @returns Component
      */
     createRECAPService(domain: 'G' | 'R' = 'G'): React.ReactNode {
-        const api = domain === 'G' ? 'google.com' : 'recaptcha.net';
         const re = this.getService('RECAP');
-        const script = re ? (
-            <Script
-                src={`https://www.${api}/recaptcha/api.js?render=${re.app}`}
-                strategy="afterInteractive"
-            />
-        ) : undefined;
+        if (re == null) return;
 
+        const api = domain === 'G' ? 'google.com' : 'recaptcha.net';
         return (
             <React.Fragment>
-                {script}
+                <Script
+                    src={`https://www.${api}/recaptcha/api.js?render=${re.app}`}
+                    strategy="afterInteractive"
+                />
                 <Script id="google-recaptcha" strategy="afterInteractive">
-                    {`
-                        function googleRecaptcha(action, callback) {
-                            if(typeof grecaptcha == undefined) {
-                                callback('');
-                                return;
-                            }
-
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('${re?.app}', {action: action}).then(function(token) {
-                                    callback(token);
-                                });
-                            });
-                        }
-                    `}
+                    {`window.googleGecaptchaSiteKey = '${re.app}'`}
                 </Script>
             </React.Fragment>
         );

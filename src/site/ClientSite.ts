@@ -50,6 +50,28 @@ export class ClientSite {
     }
 
     /**
+     * Get Google reCaptcha token
+     * @param action Action
+     * @param callback Callback
+     */
+    grecaptcha(action: string, callback: (token: string) => void) {
+        if (
+            typeof grecaptcha == undefined ||
+            typeof globalThis.googleGecaptchaSiteKey == undefined
+        ) {
+            callback('');
+            return;
+        }
+        grecaptcha.ready(function () {
+            grecaptcha
+                .execute(globalThis.googleGecaptchaSiteKey, { action: action })
+                .then(function (token) {
+                    callback(token);
+                });
+        });
+    }
+
+    /**
      * Setup wechat share
      * @param share Shared data
      * @param api Wechat configuration API
@@ -59,6 +81,9 @@ export class ClientSite {
         share?: wx.UpdateAppMessageShareDataParams,
         api = 'Public/CreateJsApiSignature'
     ) {
+        // Check exists
+        if (typeof wx === undefined) return;
+
         // Load config
         const data = await this.api.put<wx.ConfigBase>(api, {
             url: location.href
