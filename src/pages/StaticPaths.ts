@@ -30,7 +30,8 @@ export function StaticPaths(site: StaticSite, excludedUrls?: ExcludedUrls) {
                     params: { param: tab.url.substring(1).split('/') }
                 })) ?? [];
 
-        console.log('StaticPaths', paths);
+        // For debug
+        console.log('StaticPaths', JSON.stringify(paths));
 
         return {
             paths,
