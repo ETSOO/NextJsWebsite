@@ -20,6 +20,7 @@ export * from './props/SitePageProps';
 
 // rq
 export * from './rq/site/ArticleRQ';
+export * from './rq/site/SendEmailRQ';
 
 // site
 export * from './site/ClientSite';

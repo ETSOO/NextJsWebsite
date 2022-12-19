@@ -1,5 +1,7 @@
 import { createClient, IApi } from '@etsoo/restclient';
+import { IActionResult } from '@etsoo/shared';
 import { wxe } from '@etsoo/weixin';
+import { SendEmailRQ } from '../rq/site/SendEmailRQ';
 
 /**
  * Client site
@@ -72,7 +74,23 @@ export class ClientSite {
     }
 
     /**
+     * Send email
+     * 发送邮件
+     * @param rq Request data
+     * @param api Function API
+     * @returns Result
+     */
+    async sendEmail(rq: SendEmailRQ, api = 'Public/SendEmail') {
+        // Pass the JSON data
+        if (typeof rq.data === 'object') rq.data = JSON.stringify(rq.data);
+
+        // API call
+        return await this.api.post<IActionResult>(api, rq);
+    }
+
+    /**
      * Setup wechat share
+     * 设置微信分享
      * @param share Shared data
      * @param api Wechat configuration API
      * @returns Result
@@ -85,9 +103,13 @@ export class ClientSite {
         if (typeof wx === undefined) return;
 
         // Load config
-        const data = await this.api.put<wx.ConfigBase>(api, {
-            url: location.href
-        });
+        const data = await this.api.put<wx.ConfigBase>(
+            api,
+            {
+                url: location.href
+            },
+            { showLoading: false }
+        );
 
         if (data == null) return;
 
