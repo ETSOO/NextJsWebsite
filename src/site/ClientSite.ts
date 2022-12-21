@@ -27,10 +27,15 @@ export class ClientSite {
     /**
      * Constructor
      * 构造函数
+     * @param culture Culture, like en, zh-Hans
      * @param apiUrl Headless CMS API Url
      * @param errorHandler Custom error handler
      */
-    constructor(apiUrl: string, errorHandler?: (e: ApiDataError) => void) {
+    constructor(
+        public readonly culture: 'en' | 'zh-Hans' | 'zh-Hant' | string,
+        apiUrl: string,
+        errorHandler?: (e: ApiDataError) => void
+    ) {
         // Notifier
         this.notifier = new NotifierContainer();
 
@@ -45,6 +50,10 @@ export class ClientSite {
         const api = createClient();
         api.baseUrl = apiUrl;
         api.onError = errorHandler;
+
+        // Add content-language header
+        api.setContentLanguage(culture);
+
         this.api = api;
     }
 
@@ -111,15 +120,11 @@ export class ClientSite {
 
     /**
      * Setup
-     * @param culture Culture
      * @param resources Custom resources
      */
-    setup(culture: string, resources: DataTypes.StringRecord = {}) {
+    setup(resources: DataTypes.StringRecord = {}) {
         // Setup utils
-        SiteUtils.setup(culture, resources);
-
-        // Write API language header
-        this.api.setContentLanguage(culture);
+        SiteUtils.setup(this.culture, resources);
     }
 
     /**
