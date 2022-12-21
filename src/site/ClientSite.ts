@@ -1,12 +1,13 @@
 import { NotificationMessageType } from '@etsoo/notificationbase';
 import { ApiDataError, createClient, IApi } from '@etsoo/restclient';
-import { IActionResult } from '@etsoo/shared';
+import { DataTypes, IActionResult } from '@etsoo/shared';
 import { wxe } from '@etsoo/weixin';
 import {
     INotifierContainer,
     NotifierContainer
 } from '../notifier/NotifierContainer';
 import { SendEmailRQ } from '../rq/site/SendEmailRQ';
+import { SiteUtils } from './SiteUtils';
 
 /**
  * Client site
@@ -106,6 +107,19 @@ export class ClientSite {
 
         // API call
         return await this.api.post<IActionResult>(api, rq);
+    }
+
+    /**
+     * Setup
+     * @param culture Culture
+     * @param resources Custom resources
+     */
+    setup(culture: string, resources: DataTypes.StringRecord = {}) {
+        // Setup utils
+        SiteUtils.setup(culture, resources);
+
+        // Write API language header
+        this.api.setContentLanguage(culture);
     }
 
     /**
