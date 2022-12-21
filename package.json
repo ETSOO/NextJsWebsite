@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/website",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "ETSOO CMS Based NextJs Website Framework",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -45,7 +45,6 @@
     "homepage": "https://github.com/ETSOO/Website#readme",
     "dependencies": {
         "@etsoo/notificationbase": "^1.1.20",
-        "@etsoo/react": "^1.6.35",
         "@etsoo/restclient": "^1.0.79",
         "@etsoo/shared": "^1.1.84",
         "@etsoo/weixin": "^1.0.10",
