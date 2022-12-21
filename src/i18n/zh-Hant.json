@@ -1,5 +1,10 @@
 {
     "cancel": "取消",
+    "danger": "警報",
+    "error": "錯誤",
+    "info": "信息",
     "loading": "正在加載...",
-    "ok": "確定"
+    "ok": "確定",
+    "prompt": "輸入",
+    "warning": "警告"
 }

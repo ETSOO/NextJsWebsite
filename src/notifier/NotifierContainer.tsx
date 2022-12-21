@@ -27,7 +27,7 @@ export class NotifierContainer
     implements INotifierContainer
 {
     private wrappers: {
-        [K in NotificationAlign]?: [HTMLDivElement, HTMLDivElement];
+        [K in NotificationAlign]?: HTMLDivElement;
     } = {};
 
     /**
@@ -45,18 +45,28 @@ export class NotifierContainer
             // Destruct
             const { id, modal, type } = notification;
 
+            // HTML id
+            const hid = 'id' + id;
+
             const { Modal, Toast } = await import('bootstrap');
 
             // Modal
             if (modal || type in NotificationModalType) {
                 if (dismiss) {
-                    const div = document.querySelector(`div.modal#${id}`);
-                    if (div) div.remove();
+                    const div = document.querySelector(`div.modal#${hid}`);
+                    if (div) {
+                        const modal = Modal.getInstance(div);
+                        if (modal) {
+                            modal.hide();
+                            modal.dispose();
+                            div.remove();
+                        }
+                    }
                 } else {
                     const nu = notification.render(props, itemClass);
                     if (nu) {
                         nu.classList.add('etsoo-notifier-modal');
-                        nu.id = id;
+                        nu.id = hid;
                         document.body.appendChild(nu);
 
                         Modal.getOrCreateInstance(nu).show();
@@ -73,36 +83,31 @@ export class NotifierContainer
             // Wrapper
             let wrapper = this.wrappers[align];
             if (wrapper == null) {
-                const div = document.createElement('div');
-                div.className = 'position-relative etsoo-notifier-wrapper';
-                div.innerHTML = `<div class="toast-container position-absolute p-3 ${SiteUtils.getPlacement(
+                wrapper = document.createElement('div');
+                wrapper.className = `toast-container position-absolute p-3 ${SiteUtils.getPlacement(
                     align
-                )}"></div>`;
-                document.body.append(div);
-
-                const firstChild =
-                    div.firstElementChild as HTMLDivElement | null;
-                if (firstChild == null) {
-                    throw new Error(
-                        `No DIV element in the wrapper ${notification.align}`
-                    );
-                }
-
-                wrapper = [div, firstChild];
+                )}`;
+                document.body.append(wrapper);
                 this.wrappers[notification.align] = wrapper;
             }
 
-            // Container
-            const container = wrapper[1];
             if (dismiss) {
-                const nu = container.querySelector(`#${id}`);
-                if (nu) nu.remove();
+                const nu = wrapper.querySelector(`#${hid}`);
+                if (nu) {
+                    const toast = Toast.getInstance(nu);
+                    if (toast) {
+                        toast.hide();
+                        // Bug for version 5.2.3
+                        // toast.dispose();
+                        nu.remove();
+                    }
+                }
             } else {
                 const nu = notification.render(props, itemClass);
                 if (nu) {
-                    nu.id = id;
-                    container.append(nu);
-                    Toast.getOrCreateInstance(nu).show();
+                    nu.id = hid;
+                    wrapper.append(nu);
+                    Toast.getOrCreateInstance(nu, { autohide: false }).show();
                 }
             }
         });

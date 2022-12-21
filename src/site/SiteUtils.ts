@@ -98,4 +98,30 @@ export namespace SiteUtils {
 
         Object.assign(resources, customResources);
     }
+
+    /**
+     * Toggle button spinner show / hide
+     * @param button Button
+     * @param startSide In start side or not, default false
+     */
+    export function toggleButtonSpinner(
+        button: HTMLButtonElement,
+        startSide: boolean = false
+    ) {
+        let span = button.querySelector('.spinner-border');
+        if (span == null) {
+            span = document.createElement('span');
+            span.className = `spinner-border spinner-border-sm ${
+                startSide ? 'me-2' : 'ms-2'
+            }`;
+            span.role = 'status';
+
+            startSide ? button.prepend(span) : button.append(span);
+
+            button.disabled = true;
+        } else {
+            span.remove();
+            button.disabled = false;
+        }
+    }
 }

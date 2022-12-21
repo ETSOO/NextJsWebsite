@@ -1,5 +1,10 @@
 {
     "cancel": "Cancel",
+    "danger": "Alarm",
+    "error": "Error",
+    "info": "Info",
     "loading": "Loading...",
-    "ok": "OK"
+    "ok": "OK",
+    "prompt": "Input",
+    "warning": "Warning"
 }

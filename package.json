@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/website",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "description": "ETSOO CMS Based NextJs Website Framework",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",

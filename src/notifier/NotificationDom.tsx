@@ -57,6 +57,11 @@ export interface NotificationDomCallProps extends NotificationCallProps {
     cancelLabel?: string;
 
     /**
+     * Window is closable
+     */
+    closable?: boolean;
+
+    /**
      * Type
      */
     type?: string;
@@ -84,30 +89,18 @@ export class NotificationDom
 {
     private createButton(color: BSColor, value: string) {
         const button = document.createElement('button');
-        button.className = `btn btn-${color}`;
-        button.value = value;
+        button.className = `btn btn-${color} w-25`;
+        button.innerHTML = value;
         return button;
-    }
-
-    private toggleButtonSpinner(button: HTMLButtonElement) {
-        let span = button.querySelector('.spinner-border');
-        if (span == null) {
-            span = document.createElement('span');
-            span.className = 'spinner-border spinner-border-sm';
-            span.role = 'status';
-            button.prepend(span);
-
-            button.disabled = true;
-        } else {
-            span.remove();
-            button.disabled = false;
-        }
     }
 
     // Create confirm
     private createConfirm(_props: NotificationRenderProps, className?: string) {
         // Destruct
-        const type = this.type;
+        const {
+            type,
+            title = SiteUtils.getLabel(NotificationType[type].toLowerCase(), '')
+        } = this;
         const {
             buttons = (
                 _notification: INotificationDom,
@@ -119,9 +112,9 @@ export class NotificationDom
                     const cButton = this.createButton('secondary', cancelLabel);
                     cButton.name = 'cancelButton';
                     cButton.addEventListener('click', async (event) => {
-                        this.toggleButtonSpinner(cButton);
+                        SiteUtils.toggleButtonSpinner(cButton);
                         await callback(event, false);
-                        this.toggleButtonSpinner(cButton);
+                        SiteUtils.toggleButtonSpinner(cButton);
                     });
                     div.append(cButton);
                 }
@@ -129,9 +122,9 @@ export class NotificationDom
                 const okButton = this.createButton('primary', okLabel);
                 okButton.name = 'okButton';
                 okButton.addEventListener('click', async (event) => {
-                    this.toggleButtonSpinner(okButton);
+                    SiteUtils.toggleButtonSpinner(okButton);
                     await callback(event, true);
-                    this.toggleButtonSpinner(okButton);
+                    SiteUtils.toggleButtonSpinner(okButton);
                 });
 
                 if (primaryButton) Object.assign(okButton, primaryButton);
@@ -143,6 +136,7 @@ export class NotificationDom
             okLabel = SiteUtils.getLabel('ok', 'OK'),
             cancelLabel = SiteUtils.getLabel('cancel', 'Cancel'),
             cancelButton = true,
+            closable = true,
             inputs,
             primaryButton
         } = this.inputProps ?? {};
@@ -156,23 +150,30 @@ export class NotificationDom
         const div = this.createModal(className);
 
         div.innerHTML = `<div class="modal-dialog${this.getDialogStyle()}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"></div>
-            </div>
-        </div>`;
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title"></h5>
+                      ${
+                          closable
+                              ? `<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`
+                              : ''
+                      }
+                  </div>
+                  <div class="modal-body"></div>
+              </div>
+          </div>`;
 
-        const titleE = div.querySelector<HTMLDivElement>('div.modal-title');
-        this.createContent(titleE, this.title);
+        const titleE = div.querySelector<HTMLDivElement>('.modal-title');
+        this.createContent(titleE, title);
 
-        const bodyE = div.querySelector<HTMLDivElement>('div.modal-body');
+        const bodyE = div.querySelector<HTMLDivElement>('.modal-body');
         this.createContent(bodyE, this.content);
 
         if (bodyE) {
-            if (inputs) bodyE.append(inputs);
+            if (inputs) {
+                inputs.classList.add('mt-3');
+                bodyE.append(inputs);
+            }
 
             const buttonsE = buttons(this, callback);
             buttonsE.classList.add('modal-footer');
@@ -237,13 +238,13 @@ export class NotificationDom
             content = SiteUtils.getLabel('loading', 'Loading...');
 
         div.innerHTML = `<div class="modal-dialog${this.getDialogStyle()}">
-          <div class="modal-content d-flex justify-content-between flex-row align-items-center p-2">
-            <div class="spinner-border spinner-border-sm" role="status"></div>
-            <div class="spinner-title fs-6"></div>
-          </div>
-        </div>`;
+            <div class="modal-content d-flex justify-content-between flex-row align-items-center p-2">
+              <div class="spinner-border spinner-border-sm" role="status"></div>
+              <div class="spinner-title fs-6"></div>
+            </div>
+          </div>`;
 
-        const titleE = div.querySelector<HTMLDivElement>('div.spinner-title');
+        const titleE = div.querySelector<HTMLDivElement>('.spinner-title');
         this.createContent(titleE, content);
 
         // Setup callback
@@ -265,9 +266,9 @@ export class NotificationDom
                     const cButton = this.createButton('secondary', cancelLabel);
                     cButton.name = 'cancelButton';
                     cButton.addEventListener('click', async (event) => {
-                        this.toggleButtonSpinner(cButton);
+                        SiteUtils.toggleButtonSpinner(cButton);
                         if (this.onReturn) await this.onReturn(undefined);
-                        this.toggleButtonSpinner(cButton);
+                        SiteUtils.toggleButtonSpinner(cButton);
                         this.dismiss();
                     });
                     div.append(cButton);
@@ -276,9 +277,9 @@ export class NotificationDom
                 const okButton = this.createButton('primary', okLabel);
                 okButton.name = 'okButton';
                 okButton.addEventListener('click', async (event) => {
-                    this.toggleButtonSpinner(okButton);
+                    SiteUtils.toggleButtonSpinner(okButton);
                     await callback(event);
-                    this.toggleButtonSpinner(okButton);
+                    SiteUtils.toggleButtonSpinner(okButton);
                 });
 
                 if (primaryButton) Object.assign(okButton, primaryButton);
@@ -356,53 +357,55 @@ export class NotificationDom
         // Modal
         const div = this.createModal(className);
 
-        div.innerHTML = `<form
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    (
-                        event.currentTarget.elements.namedItem(
-                            'okButton'
-                        ) as HTMLButtonElement
-                    )?.click();
-                    return false;
-                }}
-            ><div class="modal-dialog${this.getDialogStyle()}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"></div>
-            </div>
-        </div></form>`;
+        div.innerHTML = `<form><div class="modal-dialog${this.getDialogStyle()}">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body"></div>
+              </div>
+          </div></form>`;
 
-        const titleE = div.querySelector<HTMLDivElement>('div.modal-title');
+        const form = div.querySelector('form');
+        form?.addEventListener('submit', (event) => {
+            event.preventDefault();
+            (form.elements.namedItem('okButton') as HTMLButtonElement)?.click();
+            return false;
+        });
+
+        const titleE = div.querySelector<HTMLDivElement>('.modal-title');
         this.createContent(titleE, this.title);
 
-        const bodyE = div.querySelector<HTMLDivElement>('div.modal-body');
+        const bodyE = div.querySelector<HTMLDivElement>('.modal-body');
         this.createContent(bodyE, this.content);
 
         if (bodyE) {
-            if (inputs) bodyE.append(inputs);
-            else {
+            if (inputs) {
+                inputs.classList.add('mt-3');
+                bodyE.append(inputs);
+            } else {
                 if (type === 'switch') {
                     const switchDiv = document.createElement('div');
-                    switchDiv.className = 'form-check form-switch';
+                    switchDiv.className = 'form-check form-switch mt-3';
                     switchDiv.innerHTML = `<input class="form-check-input" type="checkbox" value="true" id="flexSwitchCheckDefault">`;
                     input = switchDiv.querySelector('input');
                     bodyE.append(switchDiv);
                 } else if (type === 'slider') {
-                    const sInput = document.createElement('input');
-                    sInput.type = 'range';
-                    sInput.className = 'form-range';
-                    sInput.required = true;
+                    const sdiv = document.createElement('div');
+                    sdiv.className =
+                        'input-group input-group-sm align-items-center mt-3';
+                    sdiv.innerHTML = `<input class="form-control form-range" type="range" oninput="this.nextSibling.innerHTML = this.value"><label class="input-group-text"></label></div>`;
+                    const sInput = sdiv.querySelector('input');
+                    if (sInput?.nextElementSibling)
+                        sInput.nextElementSibling.innerHTML = sInput.value;
                     input = sInput;
-                    bodyE.append(sInput);
+                    bodyE.append(sdiv);
                 } else {
                     const myInput = document.createElement('input');
                     myInput.type = type ?? 'text';
                     myInput.required = true;
-                    myInput.className = 'form-control';
+                    myInput.className = 'form-control mt-3';
                     myInput.addEventListener('change', () => setError(''));
                     input = myInput;
                     bodyE.append(myInput);
@@ -413,7 +416,7 @@ export class NotificationDom
 
             // Error display
             errorDiv = document.createElement('div');
-            errorDiv.className = 'text-danger';
+            errorDiv.className = 'text-danger mt-3';
             bodyE.append(errorDiv);
 
             const buttonsE = buttons(this, handleSubmit);
@@ -433,25 +436,43 @@ export class NotificationDom
 
     private createMessage(_props: NotificationRenderProps, className?: string) {
         // Destruct
-        const { type, content, title } = this;
+        const { type, content, title, inputProps = {} } = this;
+        const { closable = true } = inputProps;
 
         // Div
         const div = document.createElement('div');
         div.className = 'toast';
 
-        div.innerHTML = `<div class="toast-header">
-            <div class="rounded me-2 ${this.getColor(
-                type
-            )}" style="width: 20px; height: 20px"></div>
-            <strong class="toast-title me-auto"></strong>
-            <small class="toast-tip"></small>
-        </div>
-        <div class="toast-body"></div>`;
+        if (
+            type === NotificationType.Danger ||
+            type === NotificationType.Error ||
+            type === NotificationType.Warning
+        ) {
+            div.role = 'alert';
+            div.ariaLive = 'assertive';
+        } else {
+            div.role = 'status';
+            div.ariaLive = 'polite';
+        }
 
-        const titleE = div.querySelector<HTMLDivElement>('strong.toast-title');
+        div.innerHTML = `<div class="toast-header">
+              <div class="rounded me-2 ${this.getColor(
+                  type
+              )}" style="width: 20px; height: 20px"></div>
+              <strong class="toast-title me-auto"></strong>
+              <small class="toast-tip"></small>
+              ${
+                  closable
+                      ? `<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>`
+                      : ''
+              }
+          </div>
+          <div class="toast-body"></div>`;
+
+        const titleE = div.querySelector<HTMLDivElement>('.toast-title');
         this.createContent(titleE, title);
 
-        const bodyE = div.querySelector<HTMLDivElement>('div.toast-body');
+        const bodyE = div.querySelector<HTMLDivElement>('.toast-body');
         this.createContent(bodyE, content);
 
         // Setup callback
