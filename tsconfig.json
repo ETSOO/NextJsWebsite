@@ -6,6 +6,7 @@
         "allowJs": true,
         "moduleResolution": "node",
         "isolatedModules": true,
+        "resolveJsonModule": true,
         "outDir": "./lib",
         "noEmit": false,
         "declaration": true,

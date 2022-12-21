@@ -1,6 +1,11 @@
-import { createClient, IApi } from '@etsoo/restclient';
+import { NotificationMessageType } from '@etsoo/notificationbase';
+import { ApiDataError, createClient, IApi } from '@etsoo/restclient';
 import { IActionResult } from '@etsoo/shared';
 import { wxe } from '@etsoo/weixin';
+import {
+    INotifierContainer,
+    NotifierContainer
+} from '../notifier/NotifierContainer';
 import { SendEmailRQ } from '../rq/site/SendEmailRQ';
 
 /**
@@ -14,16 +19,31 @@ export class ClientSite {
     readonly api: IApi;
 
     /**
+     * Notifier
+     */
+    readonly notifier: INotifierContainer;
+
+    /**
      * Constructor
      * 构造函数
      * @param apiUrl Headless CMS API Url
+     * @param errorHandler Custom error handler
      */
-    constructor(apiUrl: string) {
+    constructor(apiUrl: string, errorHandler?: (e: ApiDataError) => void) {
+        // Notifier
+        this.notifier = new NotifierContainer();
+
+        // Default error hanlder
+        errorHandler ??= (e) =>
+            this.notifier.message(
+                NotificationMessageType.Danger,
+                e.message,
+                'API error'
+            );
+
         const api = createClient();
         api.baseUrl = apiUrl;
-        api.onError = (e) => {
-            console.log('API', e);
-        };
+        api.onError = errorHandler;
         this.api = api;
     }
 
