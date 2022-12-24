@@ -39,7 +39,7 @@ export class StaticSite {
         T extends ArticleRQ,
         D = T extends { withContent: true } ? ArticleEx : Article
     >(rq: T) {
-        return this.api.post<D>('/api/Service/GetArticle', rq);
+        return this.api.post<D>('Service/GetArticle', rq);
     }
 
     /**
@@ -48,7 +48,7 @@ export class StaticSite {
      * @returns Result
      */
     getSlideshows() {
-        return this.api.get<Slideshow[]>('/api/Service/GetSlideshows');
+        return this.api.get<Slideshow[]>('Service/GetSlideshows');
     }
 
     /**
@@ -57,7 +57,7 @@ export class StaticSite {
      * @returns Data
      */
     getSiteData() {
-        return this.api.get<SiteData>('/api/Service/GetSiteData');
+        return this.api.get<SiteData>('Service/GetSiteData');
     }
 
     /**
