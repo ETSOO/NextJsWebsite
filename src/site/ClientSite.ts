@@ -188,10 +188,13 @@ export class ClientSite {
                     this.getMeta('description') ??
                     '';
 
-                const imgUrl =
+                let imgUrl =
                     this.getOG('image') ??
                     this.getMeta('image_src') ??
                     '/og.jpg';
+
+                if (!imgUrl.includes('://'))
+                    imgUrl = location.protocol + '//' + location.host + imgUrl;
 
                 share = {
                     title,
