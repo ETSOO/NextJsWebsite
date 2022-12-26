@@ -153,12 +153,16 @@ export class LocalSite {
      * Create Wechat service
      * @returns Component
      */
-    createWXService(): React.ReactNode {
+    createWXService(onReady?: () => void): React.ReactNode {
         const ga = this.getService('WX');
         if (ga == null) return;
 
         return (
-            <Script src="/js/jweixin-1.6.0.js" strategy="afterInteractive" />
+            <Script
+                src="/js/jweixin-1.6.0.js"
+                strategy="lazyOnload"
+                onReady={onReady}
+            />
         );
     }
 

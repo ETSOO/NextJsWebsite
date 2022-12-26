@@ -139,9 +139,6 @@ export class ClientSite {
         api = 'Public/CreateJsApiSignature'
     ) {
         try {
-            // Check exists
-            if (typeof wx === undefined) return;
-
             // Load config
             const data = await this.api.put<wx.ConfigBase>(
                 api,
@@ -152,6 +149,9 @@ export class ClientSite {
             );
 
             if (data == null) return;
+
+            // Check exists
+            if (typeof wx === undefined) return;
 
             // Apis
             const apis: wx.ApiName[] = [
