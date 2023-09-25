@@ -24,6 +24,18 @@ export type SiteTab = {
     name: string;
 
     /**
+     * Description
+     * 描述
+     */
+    description?: string;
+
+    /**
+     * Tab logo
+     * 栏目照片
+     */
+    logo?: string;
+
+    /**
      * Layout
      * 布局
      */
