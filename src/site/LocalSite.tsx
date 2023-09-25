@@ -37,13 +37,25 @@ export class LocalSite {
         return parts.join('');
     }
 
+    private createMenuItem(t: SiteTab, hasIcon?: boolean) {
+        return hasIcon ? (
+            <React.Fragment>
+                <i className={t.icon ?? 'fa fa-fw'}></i>
+                <span>{t.name}</span>
+            </React.Fragment>
+        ) : (
+            t.name
+        );
+    }
+
     /**
      * Create Bootstrap menu
      * 创建 Bootstrap 菜单
      * @param url Current URL
+     * @param hasIcon Take tab logo as icon
      * @returns Component
      */
-    createBootstrapMenu(url: string) {
+    createBootstrapMenu(url: string, hasIcon?: boolean) {
         // Top menu items
         const tabs = this.data.tabs;
         const tops = tabs.filter((tab) => tab.parent == null);
@@ -61,7 +73,7 @@ export class LocalSite {
                                     'nav-item nav-link' + this.matchUrl(t, url)
                                 }
                             >
-                                {t.name}
+                                {this.createMenuItem(t, hasIcon)}
                             </a>
                         );
                     } else {
@@ -75,7 +87,7 @@ export class LocalSite {
                                     }
                                     data-bs-toggle="dropdown"
                                 >
-                                    {t.name}
+                                    {this.createMenuItem(t, hasIcon)}
                                 </a>
                                 <div className="dropdown-menu fade-up m-0">
                                     {children.map((c) => (

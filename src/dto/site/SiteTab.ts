@@ -36,6 +36,12 @@ export type SiteTab = {
     logo?: string;
 
     /**
+     * Icon
+     * 图标
+     */
+    icon?: string;
+
+    /**
      * Layout
      * 布局
      */
