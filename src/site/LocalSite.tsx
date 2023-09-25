@@ -38,23 +38,6 @@ export class LocalSite {
     }
 
     /**
-     * Create Baidu JinQiao
-     * 创建百度金桥
-     * @returns Component
-     */
-    createBaiduJinQiao() {
-        const ga = this.getService('BDJQ');
-        if (ga == null) return;
-
-        return (
-            <Script
-                src={`https://hm.baidu.com/hm.js?${ga.app}`}
-                strategy="afterInteractive"
-            />
-        );
-    }
-
-    /**
      * Create Bootstrap menu
      * 创建 Bootstrap 菜单
      * @param url Current URL
@@ -168,17 +151,18 @@ export class LocalSite {
 
     /**
      * Create Wechat service
+     * @param onLoad On load handler
      * @returns Component
      */
-    createWXService(onReady?: () => void): React.ReactNode {
-        const ga = this.getService('WX');
-        if (ga == null) return;
+    createWXService(onLoad?: () => void): React.ReactNode {
+        const wx = this.getService('WX');
+        if (wx == null) return;
 
         return (
             <Script
                 src="/js/jweixin-1.6.0.js"
                 strategy="lazyOnload"
-                onReady={onReady}
+                onLoad={() => onLoad}
             />
         );
     }

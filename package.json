@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/website",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "description": "ETSOO CMS Based NextJs Website Framework",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -54,11 +54,11 @@
         "react-dom": "18.2.0"
     },
     "devDependencies": {
-        "@babel/cli": "^7.22.15",
-        "@babel/core": "^7.22.20",
+        "@babel/cli": "^7.23.0",
+        "@babel/core": "^7.23.0",
         "@babel/plugin-transform-runtime": "^7.22.15",
         "@babel/preset-env": "^7.22.20",
-        "@babel/runtime-corejs3": "^7.22.15",
+        "@babel/runtime-corejs3": "^7.23.1",
         "@testing-library/jest-dom": "^6.1.3",
         "@testing-library/react": "^14.0.0",
         "@types/bootstrap": "^5.2.7",
@@ -69,6 +69,6 @@
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",
         "ts-jest": "^29.1.1",
-        "typescript": "^4.9.4"
+        "typescript": "^5.2.2"
     }
 }
