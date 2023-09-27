@@ -1,4 +1,5 @@
 import { ArticleLink } from './ArticleLink';
+import { ArticlePhoto } from './ArticlePhoto';
 
 /**
  * Slideshow article
@@ -33,7 +34,7 @@ export type Slideshow = ArticleLink & {
      * Slideshow photo
      * 幻灯片照片
      */
-    slideshow: string;
+    photos: ArticlePhoto[];
 
     /**
      * Tab name

@@ -77,13 +77,8 @@ export function StaticArticlePage(site: StaticSite, tabFilter: TabFilter) {
             };
         }
 
-        // Update keywords and description
-        if (article.keywords) siteData.site.keywords = article.keywords;
-        if (article.description)
-            siteData.site.description = article.description;
-
         return {
-            props: { siteData, article }
+            props: { siteData, article, tab }
         };
     });
 }

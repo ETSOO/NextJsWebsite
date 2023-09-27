@@ -46,4 +46,10 @@ export type Article = ArticleLink & {
      * 栏目名称
      */
     tabName: string;
+
+    /**
+     * JSON data
+     * JSON 数据
+     */
+    jsonData?: string;
 };

@@ -1,4 +1,5 @@
 import { Article } from './Article';
+import { ArticlePhoto } from './ArticlePhoto';
 
 /**
  * Article extended
@@ -16,4 +17,10 @@ export type ArticleEx = Article & {
      * 关键词
      */
     keywords?: string;
+
+    /**
+     * Article gallery photos
+     * 文章照片库
+     */
+    photos?: ArticlePhoto[];
 };

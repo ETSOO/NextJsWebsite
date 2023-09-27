@@ -1,4 +1,5 @@
 import { ArticleEx } from '../dto/site/ArticleEx';
+import { SiteTab } from '../dto/site/SiteTab';
 import { SitePageProps } from './SitePageProps';
 
 /**
@@ -7,4 +8,5 @@ import { SitePageProps } from './SitePageProps';
  */
 export type ArticlePageProps = SitePageProps & {
     article: ArticleEx;
+    tab: SiteTab;
 };
