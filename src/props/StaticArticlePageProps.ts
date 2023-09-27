@@ -3,10 +3,10 @@ import { SiteTab } from '../dto/site/SiteTab';
 import { SitePageProps } from './SitePageProps';
 
 /**
- * Article view page props
- * 文章浏览页面参数
+ * Static article view page props
+ * 静态文章浏览页面参数
  */
-export type ArticlePageProps = SitePageProps & {
+export type StaticArticlePageProps = SitePageProps & {
     article: ArticleEx;
     tab: SiteTab;
 };

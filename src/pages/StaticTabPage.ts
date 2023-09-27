@@ -1,6 +1,6 @@
 import { SiteTab } from '../dto/site/SiteTab';
 import { TabLayout } from '../dto/site/TabLayout';
-import { TabPageProps } from '../props/TabPageProps';
+import { StaticTabPageProps } from '../props/StaticTabPageProps';
 import { StaticSite } from '../site/StaticSite';
 import { StaticPage } from './StaticPage';
 import { TabFilter } from './TabFilter';
@@ -13,7 +13,7 @@ import { TabFilter } from './TabFilter';
  * @returns Result
  */
 export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
-    return StaticPage<TabPageProps>(site, async (siteData, context) => {
+    return StaticPage<StaticTabPageProps>(site, async (siteData, context) => {
         // Current tab
         let tab: SiteTab | undefined = undefined;
         if (tabFilter === true) {

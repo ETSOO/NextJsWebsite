@@ -23,9 +23,9 @@ export * from './pages/StaticTabPage';
 export * from './pages/TabFilter';
 
 // props
-export * from './props/ArticlePageProps';
 export * from './props/SitePageProps';
-export * from './props/TabPageProps';
+export * from './props/StaticArticlePageProps';
+export * from './props/StaticTabPageProps';
 
 // rq
 export * from './rq/site/ArticleRQ';
