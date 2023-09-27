@@ -1,23 +1,19 @@
-import { GetStaticPropsContext } from 'next';
 import { SiteTab } from '../dto/site/SiteTab';
-import { ArticlePageProps } from '../props/ArticlePageProps';
+import { TabLayout } from '../dto/site/TabLayout';
+import { TabPageProps } from '../props/TabPageProps';
 import { StaticSite } from '../site/StaticSite';
 import { StaticPage } from './StaticPage';
-
-type TabFilter =
-    | ((tab: SiteTab, context: GetStaticPropsContext) => boolean)
-    | string
-    | true;
+import { TabFilter } from './TabFilter';
 
 /**
- * Create article page getStaticProps
- * 创建文章页的 getStaticProps
+ * Create tab page getStaticProps
+ * 创建栏目的 getStaticProps
  * @param site Static site
  * @param tabFilter Tab filter
  * @returns Result
  */
-export function StaticArticlePage(site: StaticSite, tabFilter: TabFilter) {
-    return StaticPage<ArticlePageProps>(site, async (siteData, context) => {
+export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
+    return StaticPage<TabPageProps>(site, async (siteData, context) => {
         // Current tab
         let tab: SiteTab | undefined = undefined;
         if (tabFilter === true) {
@@ -65,17 +61,13 @@ export function StaticArticlePage(site: StaticSite, tabFilter: TabFilter) {
             };
         }
 
-        const article = await site.getArticle({
-            tab: tab.id,
-            withContent: true
-        });
-
-        if (article == null) {
-            console.log(`No Article for Tab ${tab.name} / ${tab.id}`);
-            return {
-                notFound: true
-            };
-        }
+        const article =
+            tab.layout === TabLayout.Article
+                ? await site.getArticle({
+                      tab: tab.id,
+                      withContent: true
+                  })
+                : undefined;
 
         return {
             props: { siteData, article, tab }

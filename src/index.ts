@@ -17,13 +17,15 @@ export * from './notifier/NotificationDom';
 export * from './notifier/NotifierContainer';
 
 // pages
-export * from './pages/StaticArticlePage';
 export * from './pages/StaticPage';
 export * from './pages/StaticPaths';
+export * from './pages/StaticTabPage';
+export * from './pages/TabFilter';
 
 // props
 export * from './props/ArticlePageProps';
 export * from './props/SitePageProps';
+export * from './props/TabPageProps';
 
 // rq
 export * from './rq/site/ArticleRQ';
