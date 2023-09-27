@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/website",
-    "version": "1.0.25",
+    "version": "1.0.26",
     "description": "ETSOO CMS Based NextJs Website Framework",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -49,7 +49,7 @@
         "@etsoo/shared": "^1.2.15",
         "@etsoo/weixin": "^1.0.10",
         "bootstrap": "^5.3.2",
-        "next": "13.5.3",
+        "next": "13.5.2",
         "react": "18.2.0",
         "react-dom": "18.2.0"
     },
