@@ -20,6 +20,7 @@ export * from './notifier/NotificationDom';
 export * from './notifier/NotifierContainer';
 
 // pages
+export * from './pages/StaticFreeTabPage';
 export * from './pages/StaticPage';
 export * from './pages/StaticPaths';
 export * from './pages/StaticTabPage';
