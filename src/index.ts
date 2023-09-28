@@ -1,3 +1,6 @@
+// components
+export * from './components/HtmlContent';
+
 // defs
 export * from './defs/BSColor';
 
