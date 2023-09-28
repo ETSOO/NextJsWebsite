@@ -63,11 +63,11 @@ export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
 
         const article =
             tab.layout === TabLayout.Article
-                ? await site.getArticle({
+                ? (await site.getArticle({
                       tab: tab.id,
                       withContent: true
-                  })
-                : undefined;
+                  })) ?? null
+                : null;
 
         return {
             props: { siteData, article, tab }

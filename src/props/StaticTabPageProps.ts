@@ -7,6 +7,6 @@ import { SitePageProps } from './SitePageProps';
  * 静态栏目浏览页面参数
  */
 export type StaticTabPageProps = SitePageProps & {
-    article?: ArticleEx;
+    article: ArticleEx | null;
     tab: SiteTab;
 };
