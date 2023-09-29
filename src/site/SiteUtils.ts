@@ -2,12 +2,37 @@ import { DataTypes } from '@etsoo/shared';
 import enResources from '../i18n/en.json';
 import zhHansResources from '../i18n/zh-Hans.json';
 import zhHantResources from '../i18n/zh-Hant.json';
+import { SiteTab } from '../dto/site/SiteTab';
+import { ArticleLink } from '../dto/site/ArticleLink';
 
 /**
  * Site utilities
  * 网站工具
  */
 export namespace SiteUtils {
+    /**
+     * Format article URL
+     * 格式化文章链接
+     * @param item Article link item
+     * @returns Result
+     */
+    export function formatLink(item: ArticleLink) {
+        const { url, tabLayout, tabUrl } = item;
+        if (tabLayout === 0) return tabUrl;
+        if (tabLayout === 1) return '#';
+        return `${tabUrl}/${url}`;
+    }
+
+    /**
+     * Format tab URL
+     * 格式化栏目地址
+     * @param tab Tab
+     * @returns Result
+     */
+    export function formatUrl(tab: SiteTab) {
+        return tab.layout === 1 ? '#' : tab.url;
+    }
+
     /**
      * Get placement
      * @param p Placement

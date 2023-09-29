@@ -3,6 +3,7 @@ import React from 'react';
 import { ArticleLink } from '../dto/site/ArticleLink';
 import { SiteData } from '../dto/site/SiteData';
 import { SiteTab } from '../dto/site/SiteTab';
+import { SiteUtils } from './SiteUtils';
 
 /**
  * Local site class
@@ -186,10 +187,7 @@ export class LocalSite {
      * @returns Result
      */
     formatLink(item: ArticleLink) {
-        const { url, year, tabLayout, tabUrl } = item;
-        if (tabLayout === 0) return tabUrl;
-        if (tabLayout === 1) return '#';
-        return `${tabUrl}/${year}/${url}`;
+        return SiteUtils.formatLink(item);
     }
 
     /**
@@ -223,7 +221,7 @@ export class LocalSite {
      * @returns Result
      */
     formatUrl(tab: SiteTab) {
-        return tab.layout === 1 ? '#' : tab.url;
+        return SiteUtils.formatUrl(tab);
     }
 
     /**
