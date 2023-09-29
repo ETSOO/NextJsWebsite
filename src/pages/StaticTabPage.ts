@@ -61,6 +61,22 @@ export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
             };
         }
 
+        let parent = tab.parent;
+        if (parent && tab.ancestorTabs == null) {
+            // Avoid duplicate calculation
+            tab.ancestorTabs = [];
+
+            do {
+                const ancestor = siteData.tabs.find((tab) => tab.id === parent);
+                if (ancestor) {
+                    tab.ancestorTabs.push(ancestor);
+                    parent = ancestor.parent;
+                } else {
+                    break;
+                }
+            } while (parent);
+        }
+
         const article =
             tab.layout === TabLayout.Article
                 ? (await site.getArticle({

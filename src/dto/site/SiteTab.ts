@@ -18,6 +18,12 @@ export type SiteTab = {
     parent?: number;
 
     /**
+     * Ancestor tabs
+     * 所有上层栏目
+     */
+    ancestorTabs?: SiteTab[];
+
+    /**
      * Tab name
      * 栏目名称
      */
