@@ -4,6 +4,7 @@ import { ArticleEx } from '../dto/site/ArticleEx';
 import { SiteData } from '../dto/site/SiteData';
 import { Slideshow } from '../dto/site/Slideshow';
 import { ArticleRQ } from '../rq/site/ArticleRQ';
+import { ArticlesRQ } from '../rq/site/ArticlesRQ';
 
 /**
  * Static Site class
@@ -40,6 +41,16 @@ export class StaticSite {
         D = T extends { withContent: true } ? ArticleEx : Article
     >(rq: T) {
         return this.api.post<D>('Service/GetArticle', rq);
+    }
+
+    /**
+     * Get articles
+     * 读取文章列表
+     * @param rq Request data
+     * @returns Result
+     */
+    getArticles(rq: ArticlesRQ) {
+        return this.api.post<Article[]>('Service/GetArticles', rq);
     }
 
     /**

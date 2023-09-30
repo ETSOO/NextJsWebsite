@@ -10,9 +10,14 @@ import { TabFilter } from './TabFilter';
  * 创建栏目的 getStaticProps
  * @param site Static site
  * @param tabFilter Tab filter
+ * @param maxArticles Max artciles to read
  * @returns Result
  */
-export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
+export function StaticTabPage(
+    site: StaticSite,
+    tabFilter: TabFilter,
+    maxArticles?: number | ((tab: SiteTab) => number)
+) {
     return StaticPage<StaticTabPageProps>(site, async (siteData, context) => {
         // Current tab
         let tab: SiteTab | undefined = undefined;
@@ -85,8 +90,19 @@ export function StaticTabPage(site: StaticSite, tabFilter: TabFilter) {
                   })) ?? null
                 : null;
 
+        const articles =
+            tab.layout === TabLayout.Article || tab.layout === TabLayout.None
+                ? []
+                : (await site.getArticles({
+                      tab: tab.id,
+                      batchSize:
+                          typeof maxArticles === 'function'
+                              ? maxArticles(tab)
+                              : maxArticles
+                  })) ?? [];
+
         return {
-            props: { siteData, article, tab }
+            props: { siteData, article, articles, tab }
         };
     });
 }
