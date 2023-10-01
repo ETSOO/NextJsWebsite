@@ -11,6 +11,22 @@ import { ArticleLink } from '../dto/site/ArticleLink';
  */
 export namespace SiteUtils {
     /**
+     * Check the content should be considered as no content
+     * @param content Check content
+     * @returns Result
+     */
+    export function checkNoContent(content?: string) {
+        if (
+            content == null ||
+            content === '' ||
+            content === 'n/a' ||
+            content === '<p>n/a</p>'
+        )
+            return true;
+        else return false;
+    }
+
+    /**
      * Format article URL
      * 格式化文章链接
      * @param item Article link item
