@@ -20,7 +20,8 @@ export function StaticTabPage(
 ) {
     return StaticPage<StaticTabPageProps>(site, async (siteData, context) => {
         // Current tab
-        let tab: SiteTab | undefined = undefined;
+        let tab: SiteTab | undefined;
+        let articleUrl: string | undefined;
         if (tabFilter === true) {
             const { params = {} } = context;
 
@@ -31,6 +32,19 @@ export function StaticTabPage(
                 tab = siteData.tabs.find(
                     (tab) => tab.url.toLowerCase() === targetUrl
                 );
+
+                if (tab == null) {
+                    // Local copy
+                    const locals = [...param];
+
+                    // Is article?
+                    articleUrl = locals.pop();
+                    const tabUrl = '/' + locals.join('/').toLowerCase();
+
+                    tab = siteData.tabs.find(
+                        (tab) => tab.url.toLowerCase() === tabUrl
+                    );
+                }
             }
 
             if (tab == null) {
@@ -86,6 +100,12 @@ export function StaticTabPage(
             tab.layout === TabLayout.Article
                 ? (await site.getArticle({
                       tab: tab.id,
+                      withContent: true
+                  })) ?? null
+                : articleUrl
+                ? (await site.getArticle({
+                      tab: tab.id,
+                      url: articleUrl,
                       withContent: true
                   })) ?? null
                 : null;
