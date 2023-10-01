@@ -22,6 +22,12 @@ export type ArticlesRQ = {
     batchSize?: number;
 
     /**
+     * With content
+     * 是否返回内容
+     */
+    withContent?: boolean;
+
+    /**
      * Last release time
      * 上次发布时间
      */

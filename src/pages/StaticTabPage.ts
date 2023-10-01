@@ -115,6 +115,7 @@ export function StaticTabPage(
                 ? []
                 : (await site.getArticles({
                       tab: tab.id,
+                      withContent: tab.layout === TabLayout.ContentList,
                       batchSize:
                           typeof maxArticles === 'function'
                               ? maxArticles(tab)
