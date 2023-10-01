@@ -20,4 +20,22 @@ export type ArticlePhoto = {
      * 高度
      */
     height: number;
+
+    /**
+     * Title
+     * 标题
+     */
+    title?: string;
+
+    /**
+     * Description
+     * 描述
+     */
+    description?: string;
+
+    /**
+     * Link
+     * 链接
+     */
+    link?: string;
 };
