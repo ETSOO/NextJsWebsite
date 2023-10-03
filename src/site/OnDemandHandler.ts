@@ -21,6 +21,8 @@ export function OnDemandHandler(token: string, scheme = 'NextJsToken') {
         }
 
         try {
+            console.log(`Static page generation on demand for URLs: ${url}`);
+
             // this should be the actual path not a rewritten path
             // e.g. for "/blog/[slug]" this should be "/blog/post-1"
             if (typeof url === 'string') {
