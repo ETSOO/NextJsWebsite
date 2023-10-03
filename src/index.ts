@@ -1,4 +1,12 @@
 // components
+export * from './components/CommonArticlePage';
+export * from './components/CommonContentListPage';
+export * from './components/CommonFullListPage';
+export * from './components/CommonLogoListPage';
+export * from './components/CommonPhotosRenderer';
+export * from './components/CommonTabPage';
+export * from './components/CommonTitleDescriptionListPage';
+export * from './components/CommonTitleListPage';
 export * from './components/HtmlContent';
 
 // defs

@@ -67,8 +67,12 @@ export class StaticSite {
      * 获取网站信息
      * @returns Data
      */
-    getSiteData() {
-        return this.api.get<SiteData>('Service/GetSiteData');
+    async getSiteData() {
+        const data = await this.api.get<SiteData>('Service/GetSiteData');
+        if (data) {
+            data.site.apiBaseUrl = this.api.baseUrl;
+        }
+        return data;
     }
 
     /**
