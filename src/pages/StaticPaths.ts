@@ -11,7 +11,7 @@ type ExcludedUrls = string[] | ((tab: SiteTab) => boolean);
  * @returns Result
  */
 export function StaticPaths(site: StaticSite, excludedUrls?: ExcludedUrls) {
-    excludedUrls ??= ['/', '/contact', '/404', '/500'];
+    excludedUrls ??= ['/'];
     return async (): Promise<GetStaticPathsResult> => {
         // Pregenerate main menu items
         const siteData = await site.getSiteData();
