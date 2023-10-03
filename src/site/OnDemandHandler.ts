@@ -10,8 +10,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export function OnDemandHandler(token: string, scheme = 'NextJsToken') {
     return async function (req: NextApiRequest, res: NextApiResponse) {
         // Check for secret to confirm this is a valid request
-        if (req.headers['authorization'] !== `${scheme} ${token}`) {
-            return res.status(401).json({ message: 'Invalid token' });
+        const auth = req.headers['authorization'];
+        if (auth !== `${scheme} ${token}`) {
+            return res.status(401).json({
+                message: `Invalid token with ${scheme}, expected ${token.hideData()} but with ${auth?.hideData()}`
+            });
         }
 
         // Check url
