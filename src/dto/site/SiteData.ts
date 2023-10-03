@@ -14,7 +14,6 @@ export type SiteData = {
         title: string;
         keywords?: string;
         description?: string;
-        apiBaseUrl?: string;
     };
 
     /**

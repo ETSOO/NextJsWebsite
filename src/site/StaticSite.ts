@@ -18,12 +18,6 @@ export class StaticSite {
     readonly api: FetchApi;
 
     /**
-     * API URL
-     * 接口地址
-     */
-    private readonly apiUrl: string;
-
-    /**
      * Constructor
      * 构造函数
      * @param apiUrl Headless CMS API Url
@@ -34,8 +28,6 @@ export class StaticSite {
         api.baseUrl = apiUrl;
         api.authorize('NextStatic', token);
         this.api = api;
-
-        this.apiUrl = apiUrl;
     }
 
     /**
@@ -75,12 +67,8 @@ export class StaticSite {
      * 获取网站信息
      * @returns Data
      */
-    async getSiteData() {
-        const data = await this.api.get<SiteData>('Service/GetSiteData');
-        if (data) {
-            data.site.apiBaseUrl = this.apiUrl;
-        }
-        return data;
+    getSiteData() {
+        return this.api.get<SiteData>('Service/GetSiteData');
     }
 
     /**
