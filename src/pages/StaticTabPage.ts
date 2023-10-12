@@ -11,12 +11,14 @@ import { TabFilter } from './TabFilter';
  * @param site Static site
  * @param tabFilter Tab filter
  * @param maxArticles Max artciles to read
+ * @param revalidate Revalidate setting
  * @returns Result
  */
 export function StaticTabPage(
     site: StaticSite,
     tabFilter: TabFilter,
-    maxArticles?: number | ((tab: SiteTab) => number)
+    maxArticles?: number | ((tab: SiteTab) => number),
+    revalidate?: number | boolean
 ) {
     return StaticPage<StaticTabPageProps>(site, async (siteData, context) => {
         // Current tab
@@ -123,7 +125,8 @@ export function StaticTabPage(
                   })) ?? [];
 
         return {
-            props: { siteData, article, articles, tab }
+            props: { siteData, article, articles, tab },
+            revalidate
         };
     });
 }
